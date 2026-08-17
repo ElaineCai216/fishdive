@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <title>FishDive · 专注养鱼</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐠</text></svg>" />
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <div class="brand"><span class="brand-emoji">🐟</span> FishDive</div>
+      <button id="btn-settings" class="icon-btn" aria-label="设置" title="设置">⚙️</button>
+    </header>
+    <main id="view" class="view"></main>
+    <nav class="bottom-nav" aria-label="主导航">
+      <button class="nav-item" data-tab="focus">
+        <span class="nav-icon">⏱️</span><span class="nav-label">专注</span>
+      </button>
+      <button class="nav-item" data-tab="pond">
+        <span class="nav-icon">🐠</span><span class="nav-label">鱼塘</span>
+      </button>
+      <button class="nav-item" data-tab="album">
+        <span class="nav-icon">📖</span><span class="nav-label">图鉴</span>
+      </button>
+      <button class="nav-item" data-tab="stats">
+        <span class="nav-icon">📊</span><span class="nav-label">统计</span>
+      </button>
+    </nav>
+  </div>
+  <div id="overlay-root"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
