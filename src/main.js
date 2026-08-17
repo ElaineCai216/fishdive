@@ -35,19 +35,21 @@ function renderBackground() {
   const count = 7;
   for (let i = 0; i < count; i++) {
     const fish = FISH_BY_ID[BG_FISH[i % BG_FISH.length]];
-    const size = 16 + ((i * 7) % 14);
+    const size = 34 + ((i * 7) % 20); // 34–53px，清晰可见
     const el = document.createElement("div");
     el.className = "bg-fish";
-    el.innerHTML = renderFishSVG(fish, { size, silhouette: true });
+    // 内层负责水平翻转，避免被外层位移动画覆盖 transform
+    el.innerHTML = `<div class="bg-fish-inner">${renderFishSVG(fish, { size })}</div>`;
     const reverse = i % 2 === 1;
-    const duration = 38 + (i % 5) * 9;
+    const duration = 34 + (i % 5) * 8;
     el.style.top = `${8 + ((i * 13) % 82)}%`;
     el.style.animationDuration = `${duration}s`;
     el.style.animationDelay = `-${(i * 11) % duration}s`;
-    el.style.opacity = (0.22 + (i % 3) * 0.08).toFixed(2);
+    el.style.opacity = (0.5 + (i % 3) * 0.07).toFixed(2); // 0.50–0.64
     if (reverse) {
-      el.style.animationDirection = "reverse";
-      el.style.transform = "scaleX(-1)";
+      // 朝左游：使用反向路径动画 + 内层水平翻转（头朝左）
+      el.style.animationName = "bg-swim-back";
+      el.querySelector(".bg-fish-inner").style.transform = "scaleX(-1)";
     }
     layer.appendChild(el);
   }
@@ -55,11 +57,11 @@ function renderBackground() {
 
 function bgBubbles() {
   let out = "";
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 18; i++) {
     const left = 2 + Math.random() * 96;
-    const size = 4 + Math.random() * 9;
-    const dur = 16 + Math.random() * 18;
-    const delay = Math.random() * 20;
+    const size = 8 + Math.random() * 14; // 8–22px
+    const dur = 14 + Math.random() * 16;
+    const delay = Math.random() * 18;
     out += `<span class="bg-bubble" style="left:${left.toFixed(1)}%;width:${size.toFixed(1)}px;height:${size.toFixed(1)}px;animation-duration:${dur.toFixed(1)}s;animation-delay:${delay.toFixed(1)}s"></span>`;
   }
   return out;

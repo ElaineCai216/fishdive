@@ -1437,14 +1437,16 @@ body {
 }
 
 .bg-fish-inner {
+  display: block;
   will-change: transform;
 }
 
 .bg-fish svg {
   display: block;
-  filter: drop-shadow(0 2px 4px rgba(0, 80, 120, 0.28));
+  filter: drop-shadow(0 3px 6px rgba(0, 80, 120, 0.35));
 }
 
+/* 从左游到右（鱼头朝右） */
 @keyframes bg-swim {
   0% {
     transform: translateX(-16vw) translateY(0);
@@ -1463,6 +1465,25 @@ body {
   }
 }
 
+/* 从右游到左（配合内层 scaleX(-1)，鱼头朝左） */
+@keyframes bg-swim-back {
+  0% {
+    transform: translateX(116vw) translateY(0);
+  }
+  25% {
+    transform: translateX(80vw) translateY(-8px);
+  }
+  50% {
+    transform: translateX(52vw) translateY(9px);
+  }
+  75% {
+    transform: translateX(24vw) translateY(-14px);
+  }
+  100% {
+    transform: translateX(-16vw) translateY(0);
+  }
+}
+
 /* 背景上浮的气泡 */
 .bg-bubbles {
   position: absolute;
@@ -1473,9 +1494,22 @@ body {
   position: absolute;
   bottom: -24px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.22));
-  opacity: 0.42;
+  background: radial-gradient(circle at 32% 30%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.4) 55%, rgba(186, 230, 253, 0.75));
+  border: 1.5px solid rgba(125, 211, 252, 0.8);
+  box-shadow: inset -2px -2px 5px rgba(56, 189, 248, 0.35), 0 1px 4px rgba(56, 189, 248, 0.3);
+  opacity: 0.75;
   animation: bg-rise linear infinite;
+}
+
+.bg-bubble::after {
+  content: "";
+  position: absolute;
+  left: 22%;
+  top: 16%;
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
 }
 
 @keyframes bg-rise {
