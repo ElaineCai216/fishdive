@@ -83,6 +83,8 @@ export function statsView() {
         </div>
       </section>`;
 
+    rootEl.querySelectorAll(".stat-value").forEach(countUp);
+
     rootEl.querySelector("#month-prev").addEventListener("click", () => {
       shiftMonth(-1);
       render();
@@ -196,4 +198,22 @@ function fmtMinutes(min) {
 
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+}
+
+// 数字滚动动画：把 "123 分钟" 这类开头的数字从 0 滚动到目标值
+function countUp(el) {
+  const txt = el.textContent;
+  const m = txt.match(/^(\d+)(.*)$/);
+  if (!m) return;
+  const target = Number(m[1]);
+  const suffix = m[2];
+  const dur = 700;
+  const start = performance.now();
+  function frame(now) {
+    const t = Math.min((now - start) / dur, 1);
+    const eased = 1 - Math.pow(1 - t, 3);
+    el.textContent = `${Math.round(target * eased)}${suffix}`;
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 }

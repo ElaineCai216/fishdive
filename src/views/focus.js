@@ -3,7 +3,7 @@ import { FISH } from "../data/fishCatalog.js";
 import { pickSpecies } from "../lib/rng.js";
 import { toDateStr } from "../lib/stats.js";
 import { renderFishSVG } from "../render/fish.js";
-import { ensureAudio, playCompletion } from "../lib/sound.js";
+import { ensureAudio, playStart, playAbandon, playCompletion } from "../lib/sound.js";
 
 const DURATION_PRESETS = [15, 25, 45, 60, 90];
 const RING_C = 2 * Math.PI * 100;
@@ -61,7 +61,7 @@ export function focusView() {
               <span class="slider-value" id="duration-label">25 分钟</span>
             </div>
           </div>
-          <button type="button" id="start-btn" class="btn-primary btn-lg">开始专注 🐟</button>
+          <button type="button" id="start-btn" class="btn-primary btn-lg" data-no-sound>开始专注 🐟</button>
           <p class="hint">完成一次专注即可收获一条鱼，专注越久鱼越稀有✨</p>
         </div>
       </section>`;
@@ -102,6 +102,7 @@ export function focusView() {
       Notification.requestPermission().catch(() => {});
     }
     ensureAudio();
+    playStart();
 
     run = { endAt: Date.now() + minutes * 60000, minutes, taskName, interval: setInterval(() => tick(ctx), 500) };
     renderRunning(ctx);
@@ -138,11 +139,12 @@ export function focusView() {
         <div class="focus-meta">
           <div class="task-badge">📌 ${escapeHtml(run.taskName)}</div>
         </div>
-        <button type="button" id="abandon-btn" class="btn-ghost">放弃本次专注</button>
+        <button type="button" id="abandon-btn" class="btn-ghost" data-no-sound>放弃本次专注</button>
       </section>`;
 
     rootEl.querySelector("#abandon-btn").addEventListener("click", () => {
       ctx.confirm("放弃本次专注？", "这次不会获得鱼，也不会有任何损失。", () => {
+        playAbandon();
         clearInterval(run.interval);
         run = null;
         document.title = "FishDive · 专注养鱼";

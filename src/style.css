@@ -1,6 +1,6 @@
 :root {
-  --c-bg-top: #d9f1ff;
-  --c-bg-bottom: #f2fbff;
+  --c-bg-top: #a8e3ff;
+  --c-bg-bottom: #ecfbff;
   --c-card: #ffffff;
   --c-ink: #0f3b54;
   --c-muted: #5c7a8c;
@@ -31,7 +31,7 @@ body {
 body {
   font-family: var(--font);
   color: var(--c-ink);
-  background: linear-gradient(180deg, var(--c-bg-top) 0%, var(--c-bg-bottom) 55%, #e6f7ff 100%);
+  background: linear-gradient(160deg, #9fdfff 0%, #c9f1ff 36%, #ecfbff 66%, #f4eeff 100%);
   min-height: 100dvh;
 }
 
@@ -42,6 +42,7 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
+  z-index: 1;
 }
 
 /* ---------- 顶部栏 ---------- */
@@ -56,7 +57,6 @@ body {
   font-size: 20px;
   font-weight: 800;
   letter-spacing: 0.5px;
-  color: var(--c-ink);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -64,6 +64,25 @@ body {
 
 .brand-emoji {
   font-size: 24px;
+  display: inline-block;
+  animation: emoji-swim 3.4s ease-in-out infinite;
+}
+
+.brand-text {
+  background: linear-gradient(120deg, #0284c7 0%, #6366f1 55%, #db2777 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes emoji-swim {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-8deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(8deg);
+  }
 }
 
 .icon-btn {
@@ -107,6 +126,18 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
+  animation: view-in 0.38s cubic-bezier(0.22, 0.9, 0.35, 1) both;
+}
+
+@keyframes view-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ---------- 底部导航 ---------- */
@@ -138,7 +169,12 @@ body {
   padding: 6px 0;
   color: #8aa3b3;
   border-radius: 14px;
-  transition: color 0.2s ease, background 0.2s ease;
+  position: relative;
+  transition: color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+}
+
+.nav-item:active {
+  transform: scale(0.94);
 }
 
 .nav-item .nav-icon {
@@ -155,7 +191,20 @@ body {
 
 .nav-item.active {
   color: var(--c-primary-deep);
-  background: var(--c-primary-soft);
+  background: linear-gradient(135deg, rgba(224, 242, 254, 0.95), rgba(224, 242, 254, 0.55));
+}
+
+.nav-item.active::after {
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--c-primary);
+  box-shadow: 0 0 6px rgba(14, 165, 233, 0.6);
 }
 
 .nav-item.active .nav-icon {
@@ -165,7 +214,7 @@ body {
 
 /* ---------- 通用卡片 ---------- */
 .card {
-  background: var(--c-card);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fdff 100%);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 18px;
@@ -194,6 +243,11 @@ body {
   box-shadow: 0 8px 20px rgba(14, 165, 233, 0.35);
 }
 
+.btn-primary:hover {
+  filter: brightness(1.07);
+  box-shadow: 0 12px 26px rgba(14, 165, 233, 0.42);
+}
+
 .btn-primary:active {
   transform: scale(0.97);
 }
@@ -207,6 +261,10 @@ body {
 .btn-ghost {
   background: #f1f8fc;
   color: var(--c-primary-deep);
+}
+
+.btn-ghost:hover {
+  background: #e6f4fb;
 }
 
 .btn-ghost:active {
@@ -1286,5 +1344,262 @@ body {
 
   .timer-text {
     font-size: 36px;
+  }
+}
+
+/* ================= 全局动态背景 ================= */
+#bg-decor {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* 漂浮色块（模糊光斑） */
+.bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(56px);
+  opacity: 0.55;
+  animation: blob-drift 26s ease-in-out infinite alternate;
+}
+
+.blob-1 {
+  width: 46vw;
+  height: 46vw;
+  max-width: 400px;
+  max-height: 400px;
+  left: -14%;
+  top: -10%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.6), transparent 70%);
+}
+
+.blob-2 {
+  width: 42vw;
+  height: 42vw;
+  max-width: 340px;
+  max-height: 340px;
+  right: -12%;
+  top: 28%;
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.5), transparent 70%);
+  animation-delay: -9s;
+}
+
+.blob-3 {
+  width: 40vw;
+  height: 40vw;
+  max-width: 320px;
+  max-height: 320px;
+  left: 8%;
+  bottom: -14%;
+  background: radial-gradient(circle, rgba(244, 114, 182, 0.4), transparent 70%);
+  animation-delay: -17s;
+}
+
+@keyframes blob-drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(42px, -34px) scale(1.16);
+  }
+}
+
+/* 水波光柱 */
+.bg-rays {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.18) 42%, transparent 54%),
+    linear-gradient(65deg, transparent 56%, rgba(255, 255, 255, 0.13) 66%, transparent 76%);
+  animation: rays-sway 18s ease-in-out infinite alternate;
+}
+
+@keyframes rays-sway {
+  from {
+    transform: rotate(-2deg) scale(1);
+  }
+  to {
+    transform: rotate(2deg) scale(1.05);
+  }
+}
+
+/* 背景游动的小鱼（剪影） */
+.bg-fish-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.bg-fish {
+  position: absolute;
+  left: 0;
+  animation: bg-swim linear infinite;
+}
+
+.bg-fish-inner {
+  will-change: transform;
+}
+
+.bg-fish svg {
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(0, 80, 120, 0.28));
+}
+
+@keyframes bg-swim {
+  0% {
+    transform: translateX(-16vw) translateY(0);
+  }
+  25% {
+    transform: translateX(24vw) translateY(-14px);
+  }
+  50% {
+    transform: translateX(52vw) translateY(9px);
+  }
+  75% {
+    transform: translateX(80vw) translateY(-8px);
+  }
+  100% {
+    transform: translateX(116vw) translateY(0);
+  }
+}
+
+/* 背景上浮的气泡 */
+.bg-bubbles {
+  position: absolute;
+  inset: 0;
+}
+
+.bg-bubble {
+  position: absolute;
+  bottom: -24px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.22));
+  opacity: 0.42;
+  animation: bg-rise linear infinite;
+}
+
+@keyframes bg-rise {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.45;
+  }
+  85% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-105vh);
+    opacity: 0;
+  }
+}
+
+/* ================= 点击波纹 ================= */
+.ripple {
+  position: fixed;
+  z-index: 999;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(125, 211, 252, 0.4) 55%, transparent 72%);
+  transform: scale(0);
+  animation: ripple-out 0.62s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes ripple-out {
+  to {
+    transform: scale(9);
+    opacity: 0;
+  }
+}
+
+/* ================= 悬浮反馈（仅支持 hover 的设备） ================= */
+@media (hover: hover) {
+  .card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 36px rgba(14, 116, 165, 0.16);
+  }
+
+  .album-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .album-card:hover {
+    transform: translateY(-4px) rotate(-1deg);
+    box-shadow: 0 12px 26px rgba(14, 116, 165, 0.18);
+  }
+
+  .stat-card:hover {
+    transform: translateY(-3px);
+  }
+}
+
+/* ================= 其它动效润色 ================= */
+.chip {
+  transition: all 0.18s ease;
+}
+
+.chip:active {
+  transform: scale(0.94);
+}
+
+.icon-btn {
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.icon-btn:hover {
+  box-shadow: 0 12px 26px rgba(14, 116, 165, 0.2);
+}
+
+.text-input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.album-card.caught .album-fish .fish-svg {
+  transition: transform 0.25s ease;
+}
+
+.album-card.caught:hover .album-fish .fish-svg {
+  transform: translateY(-3px) scale(1.06);
+}
+
+/* 统计卡片数字 */
+.stat-value {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 鱼塘空状态浮鱼更灵动 */
+.empty-fish {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+  50% {
+    transform: translateY(-9px) rotate(4deg);
+  }
+}
+
+/* Toast 出现动画 */
+#toast.show {
+  animation: toast-pop 0.3s cubic-bezier(0.34, 1.5, 0.64, 1);
+}
+
+@keyframes toast-pop {
+  from {
+    transform: translateX(-50%) translateY(16px) scale(0.92);
+  }
+  to {
+    transform: translateX(-50%) translateY(0) scale(1);
   }
 }

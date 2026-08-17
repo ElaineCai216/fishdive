@@ -12,7 +12,7 @@ export function defaultState() {
     pond: [],
     tasks: [],
     sessions: [],
-    settings: { soundOn: false },
+    settings: { soundOn: true },
   };
 }
 
